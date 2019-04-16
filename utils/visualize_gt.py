@@ -14,10 +14,10 @@ def main():
         data = json.load(f)
 
     for i, d in enumerate(data):
-        print i
-        print d['gt']
-        print d['pred']
-        print "---"
+        print(i)
+        print(d['gt'])
+        print(d['pred'])
+        print("---")
         prev_pt = None
         for pt in d['lf']:
 

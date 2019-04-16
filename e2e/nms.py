@@ -10,7 +10,7 @@ def sol_non_max_suppression(start_torch, overlap_thresh):
 
     pick = sol_nms_single(start[0], overlap_thresh)
 
-    zero_idx = [0 for _ in xrange(len(pick))]
+    zero_idx = [0 for _ in range(len(pick))]
 
     select = (zero_idx, pick)
     return start_torch[select][None,...]
@@ -69,7 +69,7 @@ def lf_non_max_suppression_area(lf_xy_positions, confidences, overlap_range, ove
     bboxes = []
     center_lines = []
     scales = []
-    for i in xrange(len(lf_xy_positions)):
+    for i in range(len(lf_xy_positions)):
         pts = lf_xy_positions[i]
     # for i in xrange(lf_xy_positions.shape[1]):
         # pts = lf_xy_positions[:,i,:]

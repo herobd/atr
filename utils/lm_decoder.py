@@ -5,7 +5,7 @@ from kaldi.util.io import xopen
 from kaldi.matrix import Matrix
 from kaldi.fstext.utils import get_linear_symbol_sequence
 
-from lm_stats import LMStats
+from .lm_stats import LMStats
 import numpy as np
 
 import codecs
@@ -28,7 +28,7 @@ DICT_MORPH = {'[': 'LSB', ']': 'RSB', ';': 'SEMI', ':': 'COLON', '_': 'USCORE',
 MIN_WEIGHT = np.log(5.0e-16)
 
 def kaldi2str_single(kaldi_out):
-    return u"".join([KALDI_SPECIAL_SYM.get(k, k) for k in kaldi_out])
+    return "".join([KALDI_SPECIAL_SYM.get(k, k) for k in kaldi_out])
 
 
 def create_phone_map( filename, idx_to_char):
@@ -94,7 +94,7 @@ class LMDecoder(object):
 
         self.acoustic_scale = params.get('acoustic', 1.2)
         if self.acoustic_scale < 0:
-            print "Warning: acoustic scale is less than 0"
+            print("Warning: acoustic scale is less than 0")
         allow_partial = params.get('allow_partial', True)
         beam = params.get('beam', 13)
         self.alphaweight = params.get('alphaweight', 0.3)
@@ -152,6 +152,6 @@ class LMDecoder(object):
 
     def add_stats(self, data):
         if not self.add_stats_phase:
-            print "Reseting lm stats because more stats added after a decoding"
+            print("Reseting lm stats because more stats added after a decoding")
             self.add_stats_phase = True
         self.stats.add_stats(data)

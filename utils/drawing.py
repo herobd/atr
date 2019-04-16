@@ -3,7 +3,7 @@ import cv2
 import math
 
 def draw_sol_torch(predictions, org_img, conf_threshold=0.1):
-    for j in xrange(predictions.size(1)):
+    for j in range(predictions.size(1)):
 
         conf = predictions[0,j,0]
         conf = conf.data.cpu().numpy()[0]

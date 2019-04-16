@@ -82,7 +82,7 @@ def assign_path_to_region(out, regions):
             except:
                 scores_i.append(0)
                 # print p
-                print "Failed to assign text line, probably not an issue"
+                print("Failed to assign text line, probably not an issue")
                 continue
             pc.AddPath(region_poly, pyclipper.PT_SUBJECT, True)
 
@@ -108,7 +108,7 @@ def assign_path_to_region(out, regions):
             total_areas.append(np.inf)
             background_scores.append(np.inf)
             # print p
-            print "Failed to assign text line, probably not an issue"
+            print("Failed to assign text line, probably not an issue")
             continue
         pc.AddPaths([r['bounding_poly'] for r in regions], pyclipper.PT_SUBJECT, True)
         solution = pc.Execute(pyclipper.CT_INTERSECTION, pyclipper.PFT_NONZERO, pyclipper.PFT_NONZERO)

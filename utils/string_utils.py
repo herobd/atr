@@ -36,7 +36,7 @@ def label2input_single(value, num_of_inputs, char_break_interval):
     return np.array(input_data)
 
 def label2str_single(label, indexToCharacter, asRaw, spaceChar = "~"):
-    string = u""
+    string = ""
     for i in range(len(label)):
         if label[i] == 0:
             if asRaw:

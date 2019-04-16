@@ -1,18 +1,18 @@
 from utils import string_utils, error_rates
 import numpy as np
-import nms
+from . import nms
 import copy
 
 def get_trimmed_polygons(out):
     all_polygons = []
-    for j in xrange(out['lf'][0].shape[0]):
+    for j in range(out['lf'][0].shape[0]):
         begin = out['beginning'][j]
         end = out['ending'][j]
         last_xy = None
         begin_f = int(np.floor(begin))
         end_f = int(np.ceil(end))
         points = []
-        for i in xrange(begin_f, end_f+1):
+        for i in range(begin_f, end_f+1):
 
             if i == begin_f:
                 p0 = out['lf'][i][j]
@@ -136,7 +136,7 @@ def decode_handwriting(out, idx_to_char):
     hw_out = out['hw']
     list_of_pred = []
     list_of_raw_pred = []
-    for i in xrange(hw_out.shape[0]):
+    for i in range(hw_out.shape[0]):
         logits = hw_out[i,...]
         pred, raw_pred = string_utils.naive_decode(logits)
         pred_str = string_utils.label2str_single(pred, idx_to_char, False)
@@ -158,9 +158,9 @@ def results_to_numpy(out):
 
 def align_to_gt_lines(decoded_hw, gt_lines):
     costs = []
-    for i in xrange(len(decoded_hw)):
+    for i in range(len(decoded_hw)):
         costs.append([])
-        for j in xrange(len(gt_lines)):
+        for j in range(len(gt_lines)):
             pred = decoded_hw[i]
             gt = gt_lines[j]
             cer = error_rates.cer(gt, pred)

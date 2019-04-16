@@ -3,7 +3,7 @@ import torch.nn as nn
 from torch.autograd import Variable
 from torch.nn.modules.module import Module
 
-from fast_inverse import inverse_torch
+from .fast_inverse import inverse_torch
 import numpy as np
 
 def compute_renorm_matrix(img):
@@ -26,7 +26,7 @@ def compute_renorm_matrix(img):
 
 def compute_next_state(delta, state):
     out = Variable(torch.zeros(*state.data.shape).type(state.data.type()))
-    for i in xrange(0,3):
+    for i in range(0,3):
         out[:,i+2] = delta[:,i] + state[:,i+2]
     #r*cos(theta) + x = x'
     out[:,0] = out[:,3] * torch.cos(out[:,2]) + state[:,0]
@@ -64,7 +64,7 @@ def compute_basis(pts):
     x = A_inv.bmm(b)
 
     B = A.clone()
-    for i in xrange(3):
+    for i in range(3):
         B[:,:,i] = A[:,:,i] * x[:,i]
     return B
 

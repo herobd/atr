@@ -10,7 +10,7 @@ import cv2
 import numpy as np
 import math
 
-import grid_distortion
+from . import grid_distortion
 
 from utils import string_utils, safe_load, augmentation
 
@@ -31,7 +31,7 @@ def collate(batch):
     label_lengths = []
 
     input_batch = np.full((len(batch), dim0, dim1, dim2), PADDING_CONSTANT).astype(np.float32)
-    for i in xrange(len(batch)):
+    for i in range(len(batch)):
         b_img = batch[i]['line_img']
         input_batch[i,:,:b_img.shape[1],:] = b_img
 
@@ -68,7 +68,7 @@ class HwDataset(Dataset):
             d = safe_load.json_state(json_path)
             if d is None:
                 continue
-            for i in xrange(len(d)):
+            for i in range(len(d)):
 
                 if 'hw_path' not in d[i]:
                     continue
@@ -76,7 +76,7 @@ class HwDataset(Dataset):
 
         if random_subset_size is not None:
             self.detailed_ids = random.sample(self.detailed_ids, min(random_subset_size, len(self.detailed_ids)))
-        print len(self.detailed_ids)
+        print(len(self.detailed_ids))
 
         self.char_to_idx = char_to_idx
         self.augmentation = augmentation
@@ -112,7 +112,7 @@ class HwDataset(Dataset):
         if img.shape[0] != self.img_height:
             if img.shape[0] < self.img_height and not self.warning:
                 self.warning = True
-                print "WARNING: upsampling image to fit size"
+                print("WARNING: upsampling image to fit size")
             percent = float(self.img_height) / img.shape[0]
             img = cv2.resize(img, (0,0), fx=percent, fy=percent, interpolation = cv2.INTER_CUBIC)
 

@@ -2,9 +2,17 @@ import cv2
 import numpy as np
 
 def tensmeyer_brightness(img, foreground=0, background=0):
-    ret,th = cv2.threshold(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) ,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+    if len(img.shape)>2 and img.shape[2]==3:
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    #elif len(img.shape)==2:
+    #    gray = img[...,None]
+    else:
+        gray = img
+    ret,th = cv2.threshold(gray ,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
 
-    th = (th.astype(np.float32) / 255)[...,None]
+    th = (th.astype(np.float32) / 255)
+    if len(img.shape)>2:
+        th=th[...,None]
 
     img = img.astype(np.float32)
     img = img + (1.0 - th) * foreground

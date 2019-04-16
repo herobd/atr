@@ -1,7 +1,7 @@
 import sys
-import parse_PAGE
+from . import parse_PAGE
 import cv2
-import line_extraction
+from . import line_extraction
 import numpy as np
 import os
 import traceback
@@ -50,7 +50,7 @@ def handle_single_image(xml_path, img_path, output_directory, config={}):
                 })
 
     else:
-        print "WARNING: {} has no lines".format(xml_path)
+        print("WARNING: {} has no lines".format(xml_path))
 
     output_data_path =os.path.join(output_directory, basename, "{}.json".format(basename))
     if not os.path.exists(os.path.dirname(output_data_path)):
@@ -66,17 +66,17 @@ def find_best_xml(list_of_files, filename):
     if len(list_of_files) <= 1:
         return list_of_files
 
-    print "Selecting multiple options from:"
+    print("Selecting multiple options from:")
 
     line_cnts = []
     for xml_path in list_of_files:
         test_xml_path = os.path.join(xml_path, filename+".xml")
-        print test_xml_path
+        print(test_xml_path)
         with open(test_xml_path) as f:
             num_lines = sum(1 for line in f.readlines() if len(line.strip())>0)
         line_cnts.append((num_lines, xml_path))
     line_cnts.sort(key=lambda x:x[0], reverse=True)
-    print "Sorted by line count..."
+    print("Sorted by line count...")
     ret = [l[1] for l in line_cnts]
     return ret
 
@@ -88,7 +88,7 @@ def process_dir(xml_directory, img_directory, output_directory):
                 continue
             f = f[:-len(".xml")]
             if f in xml_filename_to_fullpath:
-                print "Error: this assumes no repeating files names: {} xml".format(f)
+                print("Error: this assumes no repeating files names: {} xml".format(f))
 
             xml_filename_to_fullpath[f].append(root)
 
@@ -101,7 +101,7 @@ def process_dir(xml_directory, img_directory, output_directory):
                 continue
 
             if f in png_filename_to_fullpath:
-                print "Error: this assumes no repeating files names: {} img".format(f)
+                print("Error: this assumes no repeating files names: {} img".format(f))
 
             extension = f[-len(".png"):]
             f = f[:-len(".png")]
@@ -109,21 +109,21 @@ def process_dir(xml_directory, img_directory, output_directory):
             png_filename_to_fullpath[f] = root
 
     xml_not_imgs = set(xml_filename_to_fullpath.keys()) - set(png_filename_to_fullpath.keys())
-    print "Files in XML but not Images", len(xml_not_imgs)
+    print("Files in XML but not Images", len(xml_not_imgs))
     # if len(xml_not_imgs) > 0:
     #     print xml_not_imgs
     img_not_xml = set(png_filename_to_fullpath.keys()) - set(xml_filename_to_fullpath.keys())
-    print "Files in Images but not XML", len(img_not_xml)
+    print("Files in Images but not XML", len(img_not_xml))
     # if len(img_not_xml) > 0:
     #     print img_not_xml
-    print ""
+    print("")
     to_process = set(xml_filename_to_fullpath.keys()) & set(png_filename_to_fullpath.keys())
-    print "Number to be processed", len(to_process)
+    print("Number to be processed", len(to_process))
 
     all_ground_truth = []
     for i, filename in enumerate(list(to_process)):
         if i%1000==0:
-            print i
+            print(i)
         img_path = png_filename_to_fullpath[filename]
         xml_paths = xml_filename_to_fullpath[filename]
 
@@ -155,8 +155,8 @@ if __name__ == "__main__":
     training_list = all_ground_truth[:9000]
     validation_list = all_ground_truth[9000:]
 
-    print "Training Size:", len(training_list)
-    print "Validation Size:", len(validation_list)
+    print("Training Size:", len(training_list))
+    print("Validation Size:", len(validation_list))
 
     with open(training_output_json, 'w') as f:
         json.dump(training_list, f)

@@ -5,7 +5,7 @@ import torch
 def adjoint(A):
     """compute inverse without division by det; ...xv3xc3 input, or array of matrices assumed"""
     AI = np.empty_like(A)
-    for i in xrange(3):
+    for i in range(3):
         AI[...,i,:] = np.cross(A[...,i-2,:], A[...,i-1,:])
     return AI
 
@@ -26,7 +26,7 @@ def dot(A, B):
 
 def adjoint_torch(A):
     AI = A.clone()
-    for i in xrange(3):
+    for i in range(3):
         AI[...,i,:] = torch.cross(A[...,i-2,:], A[...,i-1,:])
     return AI
 
@@ -53,6 +53,6 @@ if __name__ == "__main__":
     A_torch = Variable(torch.from_numpy(A))
 
     I_torch = inverse_torch(A_torch)
-    print I
-    print I_torch
+    print(I)
+    print(I_torch)
 

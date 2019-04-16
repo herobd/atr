@@ -29,7 +29,7 @@ def get_patches(image, crop_window, grid_gen, allow_end_early=False):
         N = transformation_utils.compute_renorm_matrix(memory_space)
         all_skipped = True
 
-        for b_i in xrange(memory_space.size(0)):
+        for b_i in range(memory_space.size(0)):
 
             o = floored_idx_offsets[b_i]
 

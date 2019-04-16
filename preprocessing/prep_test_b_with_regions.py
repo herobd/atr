@@ -6,7 +6,7 @@ from collections import defaultdict
 import xml.etree.ElementTree as ET
 import re
 import json
-import parse_PAGE
+from . import parse_PAGE
 import numpy as np
 
 import cv2
@@ -40,11 +40,11 @@ def create_mask_images(xml_path, original_img_path, output_path, image_id):
         img = cv2.imread(original_img_path)
         median_color = np.median(img, axis=(0,1))
 
-        print "Processing Image", image_id
+        print("Processing Image", image_id)
 
         for i, r in enumerate(data[0]['regions']):
             region_poly = r['bounding_poly']
-            print r['id']
+            print(r['id'])
 
             pts = np.array(region_poly, np.int32)
             #http://stackoverflow.com/a/15343106/3479446

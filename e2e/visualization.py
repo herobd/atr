@@ -4,7 +4,7 @@ import cv2
 def draw_output(out, img):
     img = img.copy()
 
-    for j in xrange(out['lf'][0].shape[0]):
+    for j in range(out['lf'][0].shape[0]):
         begin = out['beginning'][j]
         end = out['ending'][j]
 
@@ -12,7 +12,7 @@ def draw_output(out, img):
         # for i in xrange(len(out['lf'])):
         begin_f = int(np.floor(begin))
         end_f = int(np.ceil(end))
-        for i in xrange(begin_f, end_f+1):
+        for i in range(begin_f, end_f+1):
 
             if i == begin_f:
                 p0 = out['lf'][i][j].mean(axis=1)
@@ -47,7 +47,7 @@ def draw_output(out, img):
 
             last_xy = (x,y)
 
-    for i in xrange(out['sol'].shape[0]):
+    for i in range(out['sol'].shape[0]):
 
         p = out['sol'][i]
 

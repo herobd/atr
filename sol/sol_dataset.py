@@ -82,7 +82,7 @@ class SolDataset(Dataset):
 
         if random_subset_size is not None:
             self.ids = random.sample(self.ids, min(random_subset_size, len(self.ids)))
-        print "SOL Ids Count:", len(self.ids)
+        print("SOL Ids Count:", len(self.ids))
         self.transform = transform
 
 

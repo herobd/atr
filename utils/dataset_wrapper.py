@@ -9,7 +9,7 @@ class DatasetWrapper(object):
     def __iter__(self):
         return self
 
-    def next(self):
+    def __next__(self):
         if self.idx >= self.count:
             self.idx = 0
             raise StopIteration

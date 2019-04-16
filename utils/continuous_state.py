@@ -41,12 +41,12 @@ def init_model(config, sol_dir='best_validation', lf_dir='best_validation', hw_d
         # previous way to save the LF weights
         if 'cnn' in lf_state:
             new_state = {}
-            for k, v in lf_state.iteritems():
+            for k, v in lf_state.items():
                 if k == 'cnn':
-                    for k2, v2 in v.iteritems():
+                    for k2, v2 in v.items():
                         new_state[k+"."+k2]=v2
                 if k == 'position_linear':
-                    for k2, v2 in  v.state_dict().iteritems():
+                    for k2, v2 in  v.state_dict().items():
                         new_state[k+"."+k2]=v2
                 # if k == 'learned_window':
                 #     new_state[k]=nn.Parameter(v.data)

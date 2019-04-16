@@ -1,7 +1,7 @@
 import sys
-import parse_PAGE
+from . import parse_PAGE
 import cv2
-import line_extraction
+from . import line_extraction
 import numpy as np
 import os
 import traceback
@@ -188,13 +188,13 @@ def handle_single_image(xml_path, img_path, output_directory, config={}):
                     continue
 
                 if 'bounding_poly' not in line:
-                    print "Warning: Missing bounding poly {}".format(xml_path)
-                    print line
+                    print("Warning: Missing bounding poly {}".format(xml_path))
+                    print(line)
                     continue
 
                 if 'baseline' not in line:
-                    print "Warning: Missing baseline {}".format(xml_path)
-                    print line
+                    print("Warning: Missing baseline {}".format(xml_path))
+                    print(line)
                     continue
 
                 line_mask = line_extraction.extract_region_mask(img, line['bounding_poly'])
@@ -277,7 +277,7 @@ def handle_single_image(xml_path, img_path, output_directory, config={}):
 
 
                 line_points = []
-                for i in xrange(0,mapping.shape[1],target_height):
+                for i in range(0,mapping.shape[1],target_height):
 
                     x0 = float(rectified_to_warped_x[0,i])
                     x1 = float(rectified_to_warped_x[-1,i])
@@ -314,7 +314,7 @@ def handle_single_image(xml_path, img_path, output_directory, config={}):
             output_data.extend(region_output_data)
 
     else:
-        print "WARNING: {} has no lines".format(xml_path)
+        print("WARNING: {} has no lines".format(xml_path))
 
     output_data_path =os.path.join(output_directory, basename, "{}.json".format(basename))
     if not os.path.exists(os.path.dirname(output_data_path)):
@@ -330,17 +330,17 @@ def find_best_xml(list_of_files, filename):
     if len(list_of_files) <= 1:
         return list_of_files
 
-    print "Selecting multiple options from:"
+    print("Selecting multiple options from:")
 
     line_cnts = []
     for xml_path in list_of_files:
         test_xml_path = os.path.join(xml_path, filename+".xml")
-        print test_xml_path
+        print(test_xml_path)
         with open(test_xml_path) as f:
             num_lines = sum(1 for line in f.readlines() if len(line.strip())>0)
         line_cnts.append((num_lines, xml_path))
     line_cnts.sort(key=lambda x:x[0], reverse=True)
-    print "Sorted by line count..."
+    print("Sorted by line count...")
     ret = [l[1] for l in line_cnts]
     return ret
 
@@ -352,7 +352,7 @@ def process_dir(xml_directory, img_directory, output_directory):
                 continue
             f = f[:-len(".xml")]
             if f in xml_filename_to_fullpath:
-                print "Error: this assumes no repeating files names: {} xml".format(f)
+                print("Error: this assumes no repeating files names: {} xml".format(f))
 
             xml_filename_to_fullpath[f].append(root)
 
@@ -365,7 +365,7 @@ def process_dir(xml_directory, img_directory, output_directory):
                 continue
 
             if f in png_filename_to_fullpath:
-                print "Error: this assumes no repeating files names: {} img".format(f)
+                print("Error: this assumes no repeating files names: {} img".format(f))
 
             extension = f[-len(".png"):]
             f = f[:-len(".png")]
@@ -373,21 +373,21 @@ def process_dir(xml_directory, img_directory, output_directory):
             png_filename_to_fullpath[f] = root
 
     xml_not_imgs = set(xml_filename_to_fullpath.keys()) - set(png_filename_to_fullpath.keys())
-    print "Files in XML but not Images", len(xml_not_imgs)
+    print("Files in XML but not Images", len(xml_not_imgs))
     if len(xml_not_imgs) > 0:
-        print xml_not_imgs
+        print(xml_not_imgs)
     img_not_xml = set(png_filename_to_fullpath.keys()) - set(xml_filename_to_fullpath.keys())
-    print "Files in Images but not XML", len(img_not_xml)
+    print("Files in Images but not XML", len(img_not_xml))
     if len(img_not_xml) > 0:
-        print img_not_xml
-    print ""
+        print(img_not_xml)
+    print("")
     to_process = set(xml_filename_to_fullpath.keys()) & set(png_filename_to_fullpath.keys())
-    print "Number to be processed", len(to_process)
+    print("Number to be processed", len(to_process))
 
     all_ground_truth = []
     for i, filename in enumerate(list(to_process)):
         if i%1==0:
-            print i
+            print(i)
         img_path = png_filename_to_fullpath[filename]
         xml_paths = xml_filename_to_fullpath[filename]
 
@@ -419,8 +419,8 @@ if __name__ == "__main__":
     training_list = all_ground_truth[:45]
     validation_list = all_ground_truth[45:]
 
-    print "Training Size:", len(training_list)
-    print "Validation Size:", len(validation_list)
+    print("Training Size:", len(training_list))
+    print("Validation Size:", len(validation_list))
 
     with open(training_output_json, 'w') as f:
         json.dump(training_list, f)

@@ -1,7 +1,7 @@
 from e2e import e2e_model
 from e2e.e2e_model import E2EModel
 
-import validation_utils
+from . import validation_utils
 
 from utils import error_rates
 
@@ -37,13 +37,13 @@ def forward_pass(x, e2e, config, thresholds, idx_to_char, update_json=False):
     #                                         x, config[dataset_lookup]['json_folder'], config['alignment']['trim_to_sol'])
 
     sol_thresholds = thresholds[0]
-    sol_thresholds_idx = range(len(sol_thresholds))
+    sol_thresholds_idx = list(range(len(sol_thresholds)))
 
     lf_nms_ranges =  thresholds[1]
-    lf_nms_ranges_idx = range(len(lf_nms_ranges))
+    lf_nms_ranges_idx = list(range(len(lf_nms_ranges)))
 
     lf_nms_thresholds = thresholds[2]
-    lf_nms_thresholds_idx = range(len(lf_nms_thresholds))
+    lf_nms_thresholds_idx = list(range(len(lf_nms_thresholds)))
 
     most_ideal_pred_lines = "\n".join(most_ideal_pred_lines)
 

@@ -1,7 +1,7 @@
 import torch
 from torch.autograd import Variable
 from torch import nn
-import vgg
+from . import vgg
 
 class StartOfLineFinder(nn.Module):
     def __init__(self, base_0, base_1):

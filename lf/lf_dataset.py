@@ -48,7 +48,7 @@ class LfDataset(Dataset):
             if d is None:
                 continue
 
-            for i in xrange(len(d)):
+            for i in range(len(d)):
                 if 'lf' not in d[i]:
                     continue
                 self.detailed_ids.append((ids_idx, i))
@@ -56,7 +56,7 @@ class LfDataset(Dataset):
         if random_subset_size is not None:
             self.detailed_ids = random.sample(self.detailed_ids, min(len(self.ids), random_subset_size))
 
-        print(len(self.detailed_ids))
+        print((len(self.detailed_ids)))
 
     def __len__(self):
         return len(self.detailed_ids)

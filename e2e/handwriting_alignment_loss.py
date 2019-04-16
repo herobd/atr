@@ -79,7 +79,7 @@ def alignment(predictions, hw_scores, alpha_alignment=0.1, alpha_backprop=0.1):
     X = np.zeros_like(C)
 
     idxs = []
-    for b in xrange(C.shape[0]):
+    for b in range(C.shape[0]):
         C_i = C[b]
         row_ind, col_ind = linear_sum_assignment(C_i.T)
         idxs.append((col_ind, row_ind))

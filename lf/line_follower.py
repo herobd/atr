@@ -1,11 +1,11 @@
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
-from stn.gridgen import AffineGridGen, PerspectiveGridGen, GridGen
+from .stn.gridgen import AffineGridGen, PerspectiveGridGen, GridGen
 import numpy as np
 from utils import transformation_utils
-from lf_cnn import makeCnn
-from fast_patch_view import get_patches
+from .lf_cnn import makeCnn
+from .fast_patch_view import get_patches
 
 class LineFollower(nn.Module):
     def __init__(self, output_grid_size=32, dtype=torch.cuda.FloatTensor):
@@ -70,7 +70,7 @@ class LineFollower(nn.Module):
         view_window_imgs = []
         next_windows = []
         reset_windows = True
-        for i in xrange(steps):
+        for i in range(steps):
 
             if i%reset_interval != 0 or reset_interval==-1:
                 p_0 = positions[-1]
@@ -148,7 +148,7 @@ class LineFollower(nn.Module):
         a_pt = a_pt.transpose(1,0)
         a_pt = a_pt.expand(batch_size, a_pt.size(0), a_pt.size(1))
 
-        for i in xrange(0, len(next_windows)-1):
+        for i in range(0, len(next_windows)-1):
 
             w_0 = next_windows[i]
             w_1 = next_windows[i+1]

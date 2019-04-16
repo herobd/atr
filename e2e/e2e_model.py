@@ -6,9 +6,9 @@ import cv2
 import numpy as np
 from utils import string_utils, error_rates
 from utils import transformation_utils
-import handwriting_alignment_loss
+from . import handwriting_alignment_loss
 
-import e2e_postprocessing
+from . import e2e_postprocessing
 
 import copy
 from scipy.optimize import linear_sum_assignment
@@ -86,7 +86,7 @@ class E2EModel(nn.Module):
         p_interval = positions.size(0)
         lf_xy_positions = None
         line_imgs = []
-        for p in xrange(0,min(positions.size(0), np.inf), p_interval):
+        for p in range(0,min(positions.size(0), np.inf), p_interval):
             sub_positions = positions[p:p+p_interval,0,:]
             sub_select_idx = select_idx[p:p+p_interval]
 
@@ -106,7 +106,7 @@ class E2EModel(nn.Module):
             if lf_xy_positions is None:
                 lf_xy_positions = xy_positions
             else:
-                for i in xrange(len(lf_xy_positions)):
+                for i in range(len(lf_xy_positions)):
                     lf_xy_positions[i] = torch.cat([
                         lf_xy_positions[i],
                         xy_positions[i]
@@ -114,7 +114,7 @@ class E2EModel(nn.Module):
             expand_img = expand_img.transpose(2,3)
 
             hw_interval = p_interval
-            for h in xrange(0,min(grid_line.size(0), np.inf), hw_interval):
+            for h in range(0,min(grid_line.size(0), np.inf), hw_interval):
                 sub_out_positions = [o[h:h+hw_interval] for o in out_positions]
                 sub_xy_positions = [o[h:h+hw_interval] for o in xy_positions]
                 sub_sub_select_idx = sub_select_idx[h:h+hw_interval]
