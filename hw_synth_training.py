@@ -48,6 +48,7 @@ generator_load_path = pretrain_config['generator_path']
 train_dataset = SyntheticDataset(
                           char_set['char_to_idx'], augmentation=True,
                           img_height=hw_network_config['input_height'],
+                          param_file = pretrain_config['synth_params'],
                           dataset_size=12000)
 
 train_dataloader = DataLoader(train_dataset,
@@ -67,6 +68,7 @@ else:
     test_dataset = SyntheticDataset(
                              char_set['char_to_idx'],
                              img_height=hw_network_config['input_height'],
+                             param_file = pretrain_config['synth_params'],
                              dataset_size=2400)
 
 test_dataloader = DataLoader(test_dataset,
@@ -233,5 +235,5 @@ for epoch in range(start_epoch,1000):
     print("Test CER: {}, best: {}".format(sum_cer/steps, lowest_cer))
     print()
 
-    if cnt_since_last_improvement >= pretrain_config['hw']['stop_after_no_improvement'] and lowest_loss<0.9:
+    if cnt_since_last_improvement >= pretrain_config['hw']['stop_after_no_improvement'] and lowest_cer<0.9:
         break

@@ -57,11 +57,32 @@ def collate(batch):
     }
 
 class SyntheticDataset(Dataset):
-    def __init__(self, char_to_idx, augmentation=False, img_height=32, dataset_size=1000,cuda=True):
+    def __init__(self, char_to_idx, augmentation=False, img_height=32, param_file=None, dataset_size=1000,cuda=True):
         self.dataset_size=dataset_size #fake, but how many to run during validation
         self.img_height = img_height
-        self.synthetic = SyntheticText('../data/text_fonts','../data/OANC_text',line_prob=0.8,line_thickness=70,line_var=30,pad=20,gaus_noise=0.15,hole_prob=0.6, hole_size=400,neighbor_gap_var=30,rot=2.5,text_len=40)
-    
+        
+        #self.synthetic = SyntheticText('../data/text_fonts','../data/OANC_text',line_prob=0.8,line_thickness=70,line_var=30,pad=20,gaus_noise=0.15,hole_prob=0.6, hole_size=400,neighbor_gap_var=30,rot=2.5,text_len=40)
+        self.synthetic = []
+        with open(opt.syn_file) as f:
+            syn_params = json.load(f)
+        for gen in syn_params:
+            self.synthetic.append(SyntheticText(
+                gen['font_dir'],
+                gen['text_dir'],
+                line_prob=gen['line_prob'],
+                line_thickness=gen['line_thickness'],
+                line_var=gen['line_var'],
+                pad=gen['pad'],
+                gaus_noise=gen['gaus_noise'],
+                hole_prob=gen['hole_prob'],
+                hole_size=gen['hole_size'],
+                neighbor_gap_var=gen['neighbor_gap_var'],
+                rot=gen['rot'],
+                text_len=gen['text_len'],
+                use_warp=gen['use_warp'],
+                warp_std=gen['warp_std'],
+                warp_intr=gen['warp_intr']
+                ))
         #opt={   'output_nc':1,
         #        'input_nc':1,
         #        'ngf':64,
@@ -85,7 +106,7 @@ class SyntheticDataset(Dataset):
         #    self.generator=self.generator.cuda()
 
         self.char_to_idx = char_to_idx
-        self.augmentation = augmentation
+        self.augmentation = augmentation and not gen['use_warp']
         self.warning=False
 
 
@@ -94,7 +115,8 @@ class SyntheticDataset(Dataset):
         return self.dataset_size
 
     def __getitem__(self, idx):
-        syn_img, gt = self.synthetic.getSample()
+        syn_gen = random.choice(self.synthetic)
+        syn_img, gt = syn_gen.getSample()
 
         w=round(syn_img.shape[1] * float(self.img_height)/syn_img.shape[0])
         img = cv2.resize(syn_img,(w,self.img_height),interpolation = cv2.INTER_CUBIC)
@@ -116,7 +138,7 @@ class SyntheticDataset(Dataset):
 
         if self.augmentation:
             #img = augmentation.apply_random_color_rotation(img)
-            img = augmentation.apply_tensmeyer_brightness(img)
+            #img = augmentation.apply_tensmeyer_brightness(img) done in sythetic text generator
             if random.random()<0.5:
                 img = grid_distortion.warp_image(img)
 
