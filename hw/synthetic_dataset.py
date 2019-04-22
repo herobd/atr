@@ -13,7 +13,8 @@ import math, random
 from . import grid_distortion
 
 from utils import string_utils, safe_load, augmentation
-from utils import SyntheticText
+#from utils import SyntheticText
+from synthetic_text_gen import SyntheticText
 #from utils.generator_net import define_G
 
 import random
@@ -63,7 +64,7 @@ class SyntheticDataset(Dataset):
         
         #self.synthetic = SyntheticText('../data/text_fonts','../data/OANC_text',line_prob=0.8,line_thickness=70,line_var=30,pad=20,gaus_noise=0.15,hole_prob=0.6, hole_size=400,neighbor_gap_var=30,rot=2.5,text_len=40)
         self.synthetic = []
-        with open(opt.syn_file) as f:
+        with open(param_file) as f:
             syn_params = json.load(f)
         for gen in syn_params:
             self.synthetic.append(SyntheticText(
