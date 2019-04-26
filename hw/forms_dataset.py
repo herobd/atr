@@ -83,7 +83,7 @@ class FormsDataset(Dataset):
     def __getitem__(self, idx):
         img_path, gt = self.lines[idx]
 
-        img = cv2.imread(img_path)
+        img = cv2.imread(img_path)[0][...,None]
 
         if img is None:
             return None
