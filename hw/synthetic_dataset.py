@@ -58,7 +58,7 @@ def collate(batch):
     }
 
 class SyntheticDataset(Dataset):
-    def __init__(self, char_to_idx, augmentation=False, img_height=32, param_file=None, dataset_size=1000,cuda=True):
+    def __init__(self, char_to_idx, augmentation=False, img_height=32, param_file=None, generator_aux_path=None, dataset_size=1000,cuda=True):
         self.dataset_size=dataset_size #fake, but how many to run during validation
         self.img_height = img_height
         
@@ -84,6 +84,10 @@ class SyntheticDataset(Dataset):
                 warp_std=gen['warp_std'],
                 warp_intr=gen['warp_intr']
                 ))
+        if generator_aux_path is not None:
+            aux = torch.load(generator_aux_path)
+            for i,prob in enumerate(aux['font_prob']):
+                self.synthetic[i].fontProbs=prob
         #opt={   'output_nc':1,
         #        'input_nc':1,
         #        'ngf':64,
@@ -117,7 +121,7 @@ class SyntheticDataset(Dataset):
 
     def __getitem__(self, idx):
         syn_gen = random.choice(self.synthetic)
-        syn_img, gt = syn_gen.getSample()
+        syn_img, gt, f_index = syn_gen.getSample()
 
         w=round(syn_img.shape[1] * float(self.img_height)/syn_img.shape[0])
         img = cv2.resize(syn_img,(w,self.img_height),interpolation = cv2.INTER_CUBIC)

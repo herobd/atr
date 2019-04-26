@@ -2,8 +2,8 @@ network:
   hw:
     num_of_outputs: 120
     num_of_channels: 1
-    cnn_out_size: 512 #architecture dependant
-    input_height: 32 #architecture dependant
+    cnn_out_size: 1024 #architecture dependant
+    input_height: 60 #architecture dependant
     char_set_path: "data/OANC_char_set.json"
     num_threads: 9
 
@@ -29,5 +29,6 @@ pretraining:
     stop_after_no_improvement: 10
 
   snapshot_path: "saved_synth"
-  snapshot_prefix: "bentham"
-  generator_path: "saved_synth/bentham_40000_net_G_B.pth"
+  snapshot_prefix: "bentham60W"
+  generator_path: "../GAN_aug/checkpoints/syn_bentham60W_cyclegan/latest"
+  synth_params: "synth_hw_tr.json"

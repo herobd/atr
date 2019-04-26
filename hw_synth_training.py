@@ -44,11 +44,14 @@ idx_to_char = {}
 for k,v in char_set['idx_to_char'].items():
     idx_to_char[int(k)] = v
 
-generator_load_path = pretrain_config['generator_path']
+generator_prefix = pretrain_config['generator_path']
+generator_load_path = generator_prefix+'_net_G_B.pth'
+generator_aux_path = generator_prefix+'_aux.pth'
 train_dataset = SyntheticDataset(
                           char_set['char_to_idx'], augmentation=True,
                           img_height=hw_network_config['input_height'],
                           param_file = pretrain_config['synth_params'],
+                          generator_aux_path = generator_aux_path,
                           dataset_size=12000)
 
 train_dataloader = DataLoader(train_dataset,
@@ -69,6 +72,7 @@ else:
                              char_set['char_to_idx'],
                              img_height=hw_network_config['input_height'],
                              param_file = pretrain_config['synth_params'],
+                             generator_aux_path = generator_aux_path,
                              dataset_size=2400)
 
 test_dataloader = DataLoader(test_dataset,
