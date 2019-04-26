@@ -1,0 +1,33 @@
+network:
+  hw:
+    num_of_outputs: 120
+    num_of_channels: 1
+    cnn_out_size: 512 #architecture dependant
+    input_height: 32 #architecture dependant
+    char_set_path: "data/OANC_char_set.json"
+    num_threads: 9
+
+  lm:
+    fst_path: "../hwn5-comp-2017/data/comp_lm/data/graph/HCLG.fst"
+    mdl_path: "../hwn5-comp-2017/data/comp_lm/data/lang_test/basic.mdl"
+    words_path: "../hwn5-comp-2017/data/comp_lm/data/graph/words.txt"
+    phones_path: "../hwn5-comp-2017/data/comp_lm/data/lang_test/phones.txt"
+    beam: 8
+
+pretraining:
+
+  #validation_set:
+    #img_folder: ""
+    #json_folder: ""
+    #file_list: "data/train_a_validation_set.json"
+
+
+  hw:
+    learning_rate: 0.0002 #pyyaml bug: no scientific notation
+    batch_size: 12
+    images_per_epoch: 1000
+    stop_after_no_improvement: 10
+
+  snapshot_path: "saved_synth"
+  snapshot_prefix: "bentham"
+  generator_path: "saved_synth/bentham_40000_net_G_B.pth"
