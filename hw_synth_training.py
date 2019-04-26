@@ -6,7 +6,7 @@ from warpctc_pytorch import CTCLoss
 from hw import hw_dataset
 from hw import synthetic_dataset
 from hw import cnn_lstm
-from hw.hw_dataset import HwDataset
+from hw.forms_dataset import FormsDataset
 from hw.synthetic_dataset import SyntheticDataset
 
 from utils.dataset_wrapper import DatasetWrapper
@@ -61,7 +61,7 @@ train_dataloader = DataLoader(train_dataset,
 
 test_set_list = load_file_list(pretrain_config['validation_set']) if 'validation_set' in pretrain_config else None
 if test_set_list is not None:
-    test_dataset = HwDataset(test_set_list,
+    test_dataset = FormsDataset(test_set_list,
                              char_set['char_to_idx'],
                              img_height=hw_network_config['input_height'])
 else:
