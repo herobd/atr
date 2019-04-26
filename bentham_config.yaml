@@ -30,5 +30,7 @@ pretraining:
 
   snapshot_path: "saved_synth"
   snapshot_prefix: "bentham60W"
+  print_freq: 200
   generator_path: "../GAN_aug/checkpoints/syn_bentham60W_cyclegan/latest"
   synth_params: "synth_hw_tr.json"
+  validation_set: "../data/bentham/line_images/valid"

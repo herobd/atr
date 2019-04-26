@@ -62,9 +62,9 @@ train_dataloader = DataLoader(train_dataset,
 #batches_per_epoch = int(len(train_dataloader)/pretrain_config['hw']['batch_size'])
 #train_dataloader = DatasetWrapper(train_dataloader, batches_per_epoch)
 
-test_set_list = load_file_list(pretrain_config['validation_set']) if 'validation_set' in pretrain_config else None
-if test_set_list is not None:
-    test_dataset = FormsDataset(test_set_list,
+test_set_dir = pretrain_config['validation_set'] if 'validation_set' in pretrain_config else None
+if test_set_dir is not None:
+    test_dataset = FormsDataset(test_set_dir,
                              char_set['char_to_idx'],
                              img_height=hw_network_config['input_height'])
 else:
@@ -126,7 +126,7 @@ optimizer = torch.optim.Adam(hw.parameters(), lr=pretrain_config['hw']['learning
 dtype = torch.cuda.FloatTensor
 
 cnt_since_last_improvement = 0 
-print_freq=50
+print_freq= pretrain_config['print_freq'] if 'print_freq' in pretrain_config else 50
 for epoch in range(start_epoch,1000):
     print("Epoch {}".format(epoch))
     steps = 0.0
@@ -134,7 +134,7 @@ for epoch in range(start_epoch,1000):
     sum_loss=0
     sum_cer = 0.0
     for i, x in enumerate(train_dataloader):
-        print('iteration: {} / {}'.format(i,len(train_dataloader)), end='\r')
+        print('E[{}] iteration: {} / {}'.format(epoch,i,len(train_dataloader)), end='\r')
 
         line_imgs = x['line_imgs'].type(dtype)
         labels =  x['labels']
@@ -194,7 +194,7 @@ for epoch in range(start_epoch,1000):
         labels =  x['labels']
         label_lengths = x['label_lengths']
 
-        if test_set_list is None:
+        if test_set_dir is None:
             line_imgs=generator(line_imgs)
 
         preds = hw(line_imgs).cpu()
