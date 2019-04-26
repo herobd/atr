@@ -1,0 +1,19 @@
+[
+{
+    "font_dir": "../data/fonts/handwritten_fonts",
+    "text_dir": "../data/OANC_text",
+    "line_prob": 0.8,
+    "line_thickness": 70,
+    "line_var": 30,
+    "pad": 20,
+    "gaus_noise": 0.15,
+    "hole_prob": 0.6,
+    "hole_size": 400,
+    "neighbor_gap_var": 25,
+    "rot": 2.5,
+    "text_len": 30,
+    "use_warp": 0.7,
+    "warp_std": [1,3.5],
+    "warp_intr": [12,100]
+}
+]
